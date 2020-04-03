@@ -3,18 +3,16 @@ package obs
 import enums.Criteria._
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable
-import obs.Book
-
 
 object Service {
 
-  def addBook(b:Book):Any={
+  def addBook(b:Book):Book={
     val list=Data.search(ISBN,b.isbn)
-    if (list.isEmpty) Data.addBook(b) else Data.updateBook(b)
+    if (list.isEmpty) Data.addBook(b) else Data.updateBookQuantity(b)
   }
 
-  def viewBookList:Iterable[Book]= {
-    Data.getBookList.values
+  def viewBookList:mutable.HashMap[Int,Book]= {
+    Data.getBookList
   }
 
   def searchBookByISBN(isbn:String):ListBuffer[Book]={

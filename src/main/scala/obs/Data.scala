@@ -3,8 +3,9 @@ package obs
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import enums.Criteria._
-
 import scala.annotation.tailrec
+
+
 
 object Data {
   private val bookList = mutable.HashMap[Int, Book]()
@@ -14,14 +15,27 @@ object Data {
     bookList
   }
 
-  def addBook(b:Book):mutable.HashMap[Int,Book]={
+  def addBook(b:Book):Book={
     id+=1
     bookList+=(id->b)
+    b
   }
 
-  def updateBook(b:Book):Unit={
-    bookList.foreach {case (_,value)=> if(value.isbn==b.isbn) value.quantity+=1}
+  def updateBookQuantity(b:Book):Book=
+//    bookList.foreach {case (_,value)=> if(value.isbn==b.isbn){
+//      value.quantity+=1
+//    } }
+    incrementQuantity(0,b)
+
+  @tailrec
+  private def incrementQuantity(i:Int,b:Book):Book= {
+    if(bookList.values.toList(i).isbn==b.isbn) {
+      bookList.values.toList(i).quantity+=1
+      bookList.values.toList(i)
+    }
+    else incrementQuantity(i+1,b)
   }
+
 
   def search(criteria: Value, param: String):ListBuffer[Book]= {
     val filtered = new ListBuffer[Book]()
