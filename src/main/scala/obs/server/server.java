@@ -78,8 +78,7 @@ public class server {
     }
 
     public static Book jsonToObject(String response){
-        Gson gson=new Gson();
-        return gson.fromJson(response,Book.class);
+        return new Gson().fromJson(response,Book.class);
 //        Type listType = new TypeToken<List<Book>>(){}.getType();
 //        List<Book> myModelList = gson.fromJson(response, listType);
     }
