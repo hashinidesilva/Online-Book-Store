@@ -20,11 +20,17 @@ object Data {
     bookList+=(id->b)
     b
   }
+  def update(b:Book): Int ={
+    var count:Int=0
+    for (book <- bookList.values.toList)
+      if(b.isbn==book.isbn) {
+        book.quantity+=1
+        count=book.quantity
+      }
+    count
+  }
 
   def updateBookQuantity(b:Book):Book=
-//    bookList.foreach {case (_,value)=> if(value.isbn==b.isbn){
-//      value.quantity+=1
-//    } }
     incrementQuantity(0,b)
 
   @tailrec
@@ -36,26 +42,14 @@ object Data {
     else incrementQuantity(i+1,b)
   }
 
-
-  def search(criteria: Value, param: String):ListBuffer[Book]= {
-    val filtered = new ListBuffer[Book]()
-    val valList = bookList.values.toList
+  def search(criteria: Value, param: String):List[Book]={
     criteria match {
-      case Author => searchFrom(0, valList, filtered)(x => valList(x).author.toLowerCase == param.toLowerCase)
-      case ISBN => searchFrom(0, valList, filtered)(x => valList(x).isbn.toLowerCase == param.toLowerCase)
-      case Title => searchFrom(0, valList, filtered)(x => valList(x).title.toLowerCase == param.toLowerCase)
-      case Publisher => searchFrom(0, valList, filtered)(x => valList(x).publisher.toLowerCase == param.toLowerCase)
-      case Category => searchFrom(0, valList, filtered)(x => valList(x).category.toLowerCase == param.toLowerCase)
+      case ISBN =>bookList.values.toList.filter(book=> book.isbn.toLowerCase==param.toLowerCase)
+      case Title =>bookList.values.toList.filter(book=> book.title.toLowerCase==param.toLowerCase)
+      case Author => bookList.values.toList.filter(book=> book.author.toLowerCase==param.toLowerCase)
+      case Publisher => bookList.values.toList.filter(book=> book.publisher.toLowerCase==param.toLowerCase)
+      case Category => bookList.values.toList.filter(book=> book.category.toLowerCase==param.toLowerCase)
     }
-  }
 
-  @tailrec
-  private def searchFrom(i: Int, l: List[Book], filtered: ListBuffer[Book])(f: Int => Boolean): ListBuffer[Book] = {
-    if (i > l.length - 1) filtered
-    else if (f(i)) {
-      filtered += l(i)
-      searchFrom(i + 1, l, filtered)(f)
-    }
-    else searchFrom(i + 1, l, filtered)(f)
   }
 }

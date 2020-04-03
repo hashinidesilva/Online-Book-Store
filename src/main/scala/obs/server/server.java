@@ -17,7 +17,7 @@ import scala.jdk.javaapi.CollectionConverters;
 
 public class server {
     public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/list", new GetHandler());
         server.createContext("/add", new PostHandler());
         server.createContext("/search", new SearchHandler());
@@ -29,7 +29,7 @@ public class server {
         @Override
         public void handle(HttpExchange t) throws IOException {
             System.out.println(t.getRequestMethod());
-            java.util.List<Book> bookList=CollectionConverters.asJava(Controller.getBookList());
+            List<Book> bookList=CollectionConverters.asJava(Controller.getBookList());
             String response = objectToJson(bookList);
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
@@ -47,7 +47,8 @@ public class server {
             StringBuilder stringBuilder = new StringBuilder();
             query.forEach((s) -> stringBuilder.append(s).append("\n"));
             String book= stringBuilder.toString();
-            Book newBook=Controller.addBook(jsonToObject(book));
+            List<Book> b=jsonToObject(book);
+            List<Book> newBook=CollectionConverters.asJava(Controller.addBook(CollectionConverters.asScala(b)));
             String response= objectToJson(newBook);
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
@@ -77,10 +78,9 @@ public class server {
         return gson.toJson(list);
     }
 
-    public static Book jsonToObject(String response){
-        return new Gson().fromJson(response,Book.class);
-//        Type listType = new TypeToken<List<Book>>(){}.getType();
-//        List<Book> myModelList = gson.fromJson(response, listType);
+    public static List<Book> jsonToObject(String response){
+        Type listType = new TypeToken<List<Book>>(){}.getType();
+        return new Gson().fromJson(response, listType);
     }
 
 
