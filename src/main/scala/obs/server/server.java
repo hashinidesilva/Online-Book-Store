@@ -52,7 +52,7 @@ public class server {
         Iterable<Book> searchList=CollectionConverters.asJava(Controller.searchBook(param1,param2));
         return objectToJson(searchList);
     }
-    
+
     public static String addBook(HttpExchange t){
         InputStreamReader isr = new InputStreamReader(t.getRequestBody(), StandardCharsets.UTF_8);
         Stream<String> query = new BufferedReader(isr).lines();

@@ -2,7 +2,6 @@ package obs
 
 import scala.collection.mutable
 import enums.Criteria._
-import scala.annotation.tailrec
 
 object Data {
   private val bookList = mutable.HashMap[Int, Book]()
@@ -15,15 +14,13 @@ object Data {
   def addBook(b:Book):Int={
     val book: Option[(Int,Book)]=bookList.find(x => x._2.isbn==b.isbn)
     book match {
-      case Some((a,_))=>{
+      case Some((a,_))=>
         bookList(a).quantity+=1
         bookList(a).quantity
-      }
-      case None => {
+      case None =>
         id+=1
         bookList+=(id -> b)
         b.quantity
-      }
     }
   }
 

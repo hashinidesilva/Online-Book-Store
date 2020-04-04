@@ -1,7 +1,7 @@
 package obs
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
+
 object Controller {
   def getBookList:List[Book]={
     Service.viewBookList.values.toList
