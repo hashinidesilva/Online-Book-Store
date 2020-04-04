@@ -1,5 +1,4 @@
 package obs.server;
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
@@ -37,6 +36,7 @@ public class server {
                     response= addBook(t);
                     break;
             }
+            t.getResponseHeaders().add("Content-type"," application/json; charset=utf-8");
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
@@ -52,7 +52,7 @@ public class server {
         Iterable<Book> searchList=CollectionConverters.asJava(Controller.searchBook(param1,param2));
         return objectToJson(searchList);
     }
-
+    
     public static String addBook(HttpExchange t){
         InputStreamReader isr = new InputStreamReader(t.getRequestBody(), StandardCharsets.UTF_8);
         Stream<String> query = new BufferedReader(isr).lines();
@@ -63,7 +63,6 @@ public class server {
         return objectToJson(newBooks);
     }
 
-
     public static String objectToJson(Object list){
         return new Gson().toJson(list);
     }
@@ -72,6 +71,4 @@ public class server {
         Type listType = new TypeToken<List<Book>>(){}.getType();
         return new Gson().fromJson(response, listType);
     }
-
-
 }

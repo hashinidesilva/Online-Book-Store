@@ -12,41 +12,29 @@ object Data {
     bookList
   }
 
-  def addBook(b:Book):Book={
-    id+=1
-    bookList+=(id->b)
-    b
-  }
-  def update(b:Book): Int ={
-    var count:Int=0
-    for (book <- bookList.values.toList)
-      if(b.isbn==book.isbn) {
-        book.quantity+=1
-        count=book.quantity
+  def addBook(b:Book):Int={
+    val book: Option[(Int,Book)]=bookList.find(x => x._2.isbn==b.isbn)
+    book match {
+      case Some((a,_))=>{
+        bookList(a).quantity+=1
+        bookList(a).quantity
       }
-    count
-  }
-
-  def updateBookQuantity(b:Book):Book=
-    incrementQuantity(0,b)
-
-  @tailrec
-  private def incrementQuantity(i:Int,b:Book):Book= {
-    if(bookList.values.toList(i).isbn==b.isbn) {
-      bookList.values.toList(i).quantity+=1
-      bookList.values.toList(i)
+      case None => {
+        id+=1
+        bookList+=(id -> b)
+        b.quantity
+      }
     }
-    else incrementQuantity(i+1,b)
   }
 
   def search(criteria: Value, param: String):Iterable[Book]={
     criteria match {
-      case ISBN =>bookList.values.filter(book=> book.isbn.toLowerCase==param.toLowerCase)
+      case ISBN =>bookList.values.filter(book=> book.isbn==param)
       case Title =>bookList.values.filter(book=> book.title.toLowerCase==param.toLowerCase)
       case Author => bookList.values.filter(book=> book.author.toLowerCase==param.toLowerCase)
       case Publisher => bookList.values.filter(book=> book.publisher.toLowerCase==param.toLowerCase)
       case Category => bookList.values.filter(book=> book.category.toLowerCase==param.toLowerCase)
     }
-
   }
+
 }

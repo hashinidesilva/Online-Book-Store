@@ -5,15 +5,8 @@ import scala.collection.mutable
 
 object Service {
 
-  def addBook(newList:mutable.Buffer[Book]):mutable.Buffer[Book]={
-
-    newList.foreach(book=> {
-      val bookList=Data.getBookList.values.toList
-      if (!bookList.exists(b => b.isbn==book.isbn)) Data.addBook(book)
-      else {
-        book.quantity= Data.update(book)
-      }
-    })
+  def addBook(newList:mutable.Buffer[Book]):mutable.Buffer[Book]= {
+    newList.foreach(book => book.quantity = Data.addBook(book))
     newList
   }
 
