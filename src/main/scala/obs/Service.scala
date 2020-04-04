@@ -1,7 +1,6 @@
 package obs
 
 import enums.Criteria._
-import scala.collection.mutable.ListBuffer
 import scala.collection.mutable
 
 object Service {
@@ -15,7 +14,6 @@ object Service {
         book.quantity= Data.update(book)
       }
     })
-
     newList
   }
 
@@ -23,23 +21,23 @@ object Service {
     Data.getBookList
   }
 
-  def searchBookByISBN(isbn:String):List[Book]={
+  def searchBookByISBN(isbn:String):Iterable[Book]={
     Data.search(ISBN,isbn)
   }
 
-  def searchBookByTitle(title:String):List[Book]={
+  def searchBookByTitle(title:String):Iterable[Book]={
     Data.search(Title,title)
   }
 
-  def searchBookByAuthor(author:String):List[Book]={
+  def searchBookByAuthor(author:String):Iterable[Book]={
     Data.search(Author,author)
   }
 
-  def searchBookByPublisher(publisher:String):List[Book]={
+  def searchBookByPublisher(publisher:String):Iterable[Book]={
     Data.search(Publisher,publisher)
   }
 
-  def searchBookByCategory(category:String):List[Book]={
+  def searchBookByCategory(category:String):Iterable[Book]={
     Data.search(Category,category)
   }
 }

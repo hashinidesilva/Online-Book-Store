@@ -18,64 +18,54 @@ import scala.jdk.javaapi.CollectionConverters;
 public class server {
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/list", new GetHandler());
-        server.createContext("/add", new PostHandler());
-        server.createContext("/search", new SearchHandler());
+        server.createContext("/book", new Handler());
         server.setExecutor(null); // creates a default executor
         server.start();
     }
 
-    static class GetHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            System.out.println(t.getRequestMethod());
-            List<Book> bookList=CollectionConverters.asJava(Controller.getBookList());
-            String response = objectToJson(bookList);
+    static class Handler implements HttpHandler{
+        public void handle(HttpExchange t) throws IOException{
+            String request=t.getRequestMethod();
+            String response="";
+            switch(request) {
+                case "GET":
+                    String[] pathParam=t.getRequestURI().getPath().split("/");
+                    if(pathParam.length==2) response = bookList();
+                    else response = searchBook(pathParam[2],pathParam[3]);
+                    break;
+                case "POST":
+                    response= addBook(t);
+                    break;
+            }
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
         }
+    }
+    public static String bookList(){
+        List<Book> bookList=CollectionConverters.asJava(Controller.getBookList());
+        return objectToJson(bookList);
     }
 
-    static class PostHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            InputStreamReader isr = new InputStreamReader(t.getRequestBody(), StandardCharsets.UTF_8);
-            BufferedReader br = new BufferedReader(isr);
-            Stream<String> query = br.lines();
-            StringBuilder stringBuilder = new StringBuilder();
-            query.forEach((s) -> stringBuilder.append(s).append("\n"));
-            String book= stringBuilder.toString();
-            List<Book> b=jsonToObject(book);
-            List<Book> newBook=CollectionConverters.asJava(Controller.addBook(CollectionConverters.asScala(b)));
-            String response= objectToJson(newBook);
-            t.sendResponseHeaders(200, response.length());
-            OutputStream os = t.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
+    public static String searchBook(String param1,String param2){
+        Iterable<Book> searchList=CollectionConverters.asJava(Controller.searchBook(param1,param2));
+        return objectToJson(searchList);
     }
 
-    static class SearchHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange t) throws IOException {
-            String params=t.getRequestURI().getQuery();
-            String[] paramList = params.split("=");
-            java.util.List<Book> searchList=CollectionConverters.asJava(Controller.searchBook(paramList[0],paramList[1]));
-            String response = objectToJson(searchList);
-//            System.out.println(t.getRequestURI().getPath());
-//            String response="";
-            t.sendResponseHeaders(200, response.length());
-            OutputStream os = t.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        }
+    public static String addBook(HttpExchange t){
+        InputStreamReader isr = new InputStreamReader(t.getRequestBody(), StandardCharsets.UTF_8);
+        Stream<String> query = new BufferedReader(isr).lines();
+        StringBuilder stringBuilder = new StringBuilder();
+        query.forEach((s) -> stringBuilder.append(s).append("\n"));
+        List<Book> b=jsonToObject(stringBuilder.toString());
+        List<Book> newBooks=CollectionConverters.asJava(Controller.addBook(CollectionConverters.asScala(b)));
+        return objectToJson(newBooks);
     }
+
 
     public static String objectToJson(Object list){
-        Gson gson=new Gson();
-        return gson.toJson(list);
+        return new Gson().toJson(list);
     }
 
     public static List<Book> jsonToObject(String response){

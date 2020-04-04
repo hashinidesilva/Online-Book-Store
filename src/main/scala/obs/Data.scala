@@ -1,11 +1,8 @@
 package obs
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
 import enums.Criteria._
 import scala.annotation.tailrec
-
-
 
 object Data {
   private val bookList = mutable.HashMap[Int, Book]()
@@ -42,13 +39,13 @@ object Data {
     else incrementQuantity(i+1,b)
   }
 
-  def search(criteria: Value, param: String):List[Book]={
+  def search(criteria: Value, param: String):Iterable[Book]={
     criteria match {
-      case ISBN =>bookList.values.toList.filter(book=> book.isbn.toLowerCase==param.toLowerCase)
-      case Title =>bookList.values.toList.filter(book=> book.title.toLowerCase==param.toLowerCase)
-      case Author => bookList.values.toList.filter(book=> book.author.toLowerCase==param.toLowerCase)
-      case Publisher => bookList.values.toList.filter(book=> book.publisher.toLowerCase==param.toLowerCase)
-      case Category => bookList.values.toList.filter(book=> book.category.toLowerCase==param.toLowerCase)
+      case ISBN =>bookList.values.filter(book=> book.isbn.toLowerCase==param.toLowerCase)
+      case Title =>bookList.values.filter(book=> book.title.toLowerCase==param.toLowerCase)
+      case Author => bookList.values.filter(book=> book.author.toLowerCase==param.toLowerCase)
+      case Publisher => bookList.values.filter(book=> book.publisher.toLowerCase==param.toLowerCase)
+      case Category => bookList.values.filter(book=> book.category.toLowerCase==param.toLowerCase)
     }
 
   }
