@@ -10,8 +10,8 @@ import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import obs.Book;
-import obs.Controller;
+import obs.controller.Controller;
+import obs.model.Book;
 import scala.jdk.javaapi.CollectionConverters;
 
 public class Server {
