@@ -71,7 +71,7 @@
 ```
 ### Search by ISBN
 #### Request
-```GET /book/isbn/{ISBN}```
+```GET /book/isbn/{isbn}```
 #### Response
 ```json
 [
