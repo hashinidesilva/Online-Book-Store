@@ -1,12 +1,20 @@
 package obs
 
-import enums.Criteria._
+import enums.Criteria
 import scala.collection.mutable
 
 object Service {
-
   def addBook(newList:mutable.Buffer[Book]):mutable.Buffer[Book]= {
-    newList.foreach(book => book.quantity = Data.addBook(book))
+    newList.foreach(book => {
+      val b: Option[(Int,Book)]=Data.getBookList.find(x => x._2.isbn==book.isbn)
+      b match {
+        case Some((a,_))=>
+          Data.getBookList(a).quantity+=1
+          book.quantity=Data.getBookList(a).quantity
+        case None =>
+          Data.addBook(book)
+      }
+    })
     newList
   }
 
@@ -15,22 +23,22 @@ object Service {
   }
 
   def searchBookByISBN(isbn:String):Iterable[Book]={
-    Data.search(ISBN,isbn)
+    Data.search(Criteria.ISBN,isbn)
   }
 
   def searchBookByTitle(title:String):Iterable[Book]={
-    Data.search(Title,title)
+    Data.search(Criteria.Title,title)
   }
 
   def searchBookByAuthor(author:String):Iterable[Book]={
-    Data.search(Author,author)
+    Data.search(Criteria.Author,author)
   }
 
   def searchBookByPublisher(publisher:String):Iterable[Book]={
-    Data.search(Publisher,publisher)
+    Data.search(Criteria.Publisher,publisher)
   }
 
   def searchBookByCategory(category:String):Iterable[Book]={
-    Data.search(Category,category)
+    Data.search(Criteria.Category,category)
   }
 }

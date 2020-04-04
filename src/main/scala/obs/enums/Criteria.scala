@@ -1,6 +1,10 @@
 package obs.enums
 
 object Criteria extends Enumeration {
-  val ISBN,Title,Author,Publisher,Category =Value
+  val ISBN = "isbn"
+  val Title = "title"
+  val Author = "author"
+  val Category = "category"
+  val Publisher ="publisher"
 }
 

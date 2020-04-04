@@ -14,7 +14,7 @@ import obs.Book;
 import obs.Controller;
 import scala.jdk.javaapi.CollectionConverters;
 
-public class server {
+public class Server {
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/book", new Handler());
@@ -27,7 +27,7 @@ public class server {
             String request=t.getRequestMethod();
             String response="";
             switch(request) {
-                case "GET":
+                case "GET" :
                     String[] pathParam=t.getRequestURI().getPath().split("/");
                     if(pathParam.length==2) response = bookList();
                     else response = searchBook(pathParam[2],pathParam[3]);
@@ -43,13 +43,14 @@ public class server {
             os.close();
         }
     }
+
     public static String bookList(){
         List<Book> bookList=CollectionConverters.asJava(Controller.getBookList());
         return objectToJson(bookList);
     }
 
     public static String searchBook(String param1,String param2){
-        Iterable<Book> searchList=CollectionConverters.asJava(Controller.searchBook(param1,param2));
+        Iterable<Book> searchList=CollectionConverters.asJava(Controller.searchBook(param1.toLowerCase(),param2.toLowerCase()));
         return objectToJson(searchList);
     }
 

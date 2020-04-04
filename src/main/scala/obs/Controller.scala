@@ -1,5 +1,7 @@
 package obs
 
+import obs.enums.Criteria
+
 import scala.collection.mutable
 
 object Controller {
@@ -14,11 +16,12 @@ object Controller {
 
   def searchBook(criteria:String,param:String):Iterable[Book]={
     criteria match {
-      case "isbn" => Service.searchBookByISBN(param)
-      case "title" => Service.searchBookByTitle(param)
-      case "author"=> Service.searchBookByAuthor(param)
-      case "publisher"=> Service.searchBookByPublisher(param)
-      case "category"=> Service.searchBookByCategory(param)
+      case Criteria.ISBN => Service.searchBookByISBN(param)
+      case Criteria.Title => Service.searchBookByTitle(param)
+      case Criteria.Author=> Service.searchBookByAuthor(param)
+      case Criteria.Publisher=> Service.searchBookByPublisher(param)
+      case Criteria.Category=> Service.searchBookByCategory(param)
+      case _ => Iterable[Book]()
     }
   }
 
