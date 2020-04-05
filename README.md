@@ -4,7 +4,7 @@
 ```base URL = http://localhost:8080```
 ### Get List of Books
 #### Request
-```GET /book```
+```GET /books```
 #### Response
 ```json
 [
@@ -28,7 +28,7 @@
 ```
 ### Add books
 #### Request
-```POST /book```
+```POST /books```
 ##### Request Body
 ```json
 [
@@ -71,7 +71,7 @@
 ```
 ### Search by ISBN
 #### Request
-```GET /book/isbn/{isbn}```
+```GET /books/isbn/{isbn}```
 #### Response
 ```json
 [
@@ -87,7 +87,7 @@
 ```
 ### Search by Title
 #### Request
-```GET /book/title/{title}```
+```GET /books/title/{title}```
 #### Response
 ```json
 [
@@ -103,7 +103,7 @@
 ```
 ### Search by Author
 #### Request
-```GET /book/author/{author}```
+```GET /books/author/{author}```
 #### Response
 ```json
 [
@@ -119,7 +119,7 @@
 ```
 ### Search by Publisher
 #### Request
-```GET /book/publisher/{publisher}```
+```GET /books/publisher/{publisher}```
 #### Response
 ```json
 [
@@ -135,7 +135,7 @@
 ```
 ### Search by Category
 #### Request
-```GET /book/category/{category}```
+```GET /books/category/{category}```
 #### Response
 ```json
 [
