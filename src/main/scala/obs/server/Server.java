@@ -26,18 +26,21 @@ public class Server {
         public void handle(HttpExchange t) throws IOException{
             String request=t.getRequestMethod();
             String response="";
+            int status=405;
             switch(request) {
                 case "GET" :
                     String[] pathParam=t.getRequestURI().getPath().split("/");
                     if(pathParam.length==2) response = bookList();
                     else response = searchBook(pathParam[2],pathParam[3]);
+                    status=200;
                     break;
                 case "POST":
                     response= addBook(t);
+                    status=201;
                     break;
             }
             t.getResponseHeaders().add("Content-type"," application/json; charset=utf-8");
-            t.sendResponseHeaders(200, response.length());
+            t.sendResponseHeaders(status, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
