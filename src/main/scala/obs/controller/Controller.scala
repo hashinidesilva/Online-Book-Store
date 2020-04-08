@@ -3,15 +3,14 @@ package obs.controller
 import obs.enums.Criteria
 import obs.model.Book
 import obs.service.Service
-import scala.collection.mutable
 
 object Controller {
-  def getBookList:List[Book]={
-    Service.viewBookList.values.toList
+  def getBookList:Iterable[Book]={
+    Service.viewBookList.values
   }
 
-  def addBook(b:mutable.Buffer[Book]):mutable.Buffer[Book]={
-    b.foreach(book=> book.quantity=1)
+  def addBook(b:Book):Book={
+    b.quantity=1
     Service.addBook(b)
   }
 
@@ -25,5 +24,4 @@ object Controller {
       case _ => Iterable[Book]()
     }
   }
-
 }
