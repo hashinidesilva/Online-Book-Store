@@ -1,4 +1,4 @@
 package obs.model
 
-case class Book(val isbn:String,val title:String,val author:String,val publisher:String,val category:String,var quantity:Int) {
+case class Book(isbn:String,title:String,author:String,publisher:String,category:String,var quantity:Int) {
 }
