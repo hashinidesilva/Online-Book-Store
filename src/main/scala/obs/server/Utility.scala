@@ -12,7 +12,7 @@ import scala.jdk.javaapi.CollectionConverters
 
 object Utility {
   def UriParsing(httpExchange: HttpExchange): Pair[String, Integer] = {
-    val HTTP_METHOD_NOT_ALLOWED = 405
+    val HTTP_METHOD_NOT_ALLOWED:Int = 405
     val HTTP_SUCCESS = 200
     val HTTP_CREATED = 201
     val HTTP_NOT_FOUND=404
@@ -33,17 +33,17 @@ object Utility {
     }
   }
 
-  def bookList: String = {
+  private def bookList: String = {
     val bookList = Controller.getBookList
     objectListToJson(bookList)
   }
 
-  def searchBooks(criteria: String, value: String): String = {
+  private def searchBooks(criteria: String, value: String): String = {
     val searchList =Controller.searchBook(criteria.toLowerCase, value.toLowerCase)
     objectListToJson(searchList)
   }
 
-  def addBook(httpExchange: HttpExchange): String = {
+  private def addBook(httpExchange: HttpExchange): String = {
     val isr = new InputStreamReader(httpExchange.getRequestBody, StandardCharsets.UTF_8)
     val query = new BufferedReader(isr).lines
     val stringBuilder = new StringBuilder
@@ -51,19 +51,19 @@ object Utility {
     objectToJson(Controller.addBook(jsonToObject(stringBuilder.toString)))
   }
 
-  def getBook(isbn:String):String ={
+  private def getBook(isbn:String):String ={
     objectToJson(Controller.getBook(isbn))
   }
 
-  def objectToJson(list: Any): String = {
+  private def objectToJson(list: Any): String = {
     new Gson().toJson(list)
   }
 
-  def objectListToJson(list: Iterable[Book]): String = {
+  private def objectListToJson(list: Iterable[Book]): String = {
     new Gson().toJson(CollectionConverters.asJava(list))
   }
 
-  def jsonToObject(response: String): Book = {
+  private def jsonToObject(response: String): Book = {
     new Gson().fromJson(response, classOf[Book])
   }
 
