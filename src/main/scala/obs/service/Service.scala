@@ -19,12 +19,15 @@ object Service {
     book
     }
 
-  def viewBookList:mutable.HashMap[Int,Book]= {
-    Data.getBookList
+  def getBook(isbn:String):Any ={
+    Data.getBook(isbn) match {
+      case Some(b) => b
+      case None => "No record found"
+    }
   }
 
-  def searchBookByISBN(isbn:String):Iterable[Book]={
-    Data.search(Criteria.ISBN,isbn)
+  def viewBookList:mutable.HashMap[Int,Book]= {
+    Data.getBookList
   }
 
   def searchBookByTitle(title:String):Iterable[Book]={

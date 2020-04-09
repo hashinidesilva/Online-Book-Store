@@ -17,9 +17,11 @@ object Data {
     bookList+=(id -> b)
   }
 
+  def getBook(isbn:String):Option[Book]={
+    bookList.values.find(book=> book.isbn==isbn)
+  }
   def search(criteria:String, param: String):Iterable[Book]={
     criteria match {
-      case Criteria.ISBN =>bookList.values.filter(book=> book.isbn==param)
       case Criteria.Title =>bookList.values.filter(book=> book.title.toLowerCase==param)
       case Criteria.Author => bookList.values.filter(book=> book.author.toLowerCase==param)
       case Criteria.Publisher => bookList.values.filter(book=> book.publisher.toLowerCase==param)

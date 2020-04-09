@@ -14,9 +14,12 @@ object Controller {
     Service.addBook(b)
   }
 
+  def getBook(isbn:String):Any={
+    Service.getBook(isbn)
+  }
+
   def searchBook(criteria:String,param:String):Iterable[Book]={
     criteria match {
-      case Criteria.ISBN => Service.searchBookByISBN(param)
       case Criteria.Title => Service.searchBookByTitle(param)
       case Criteria.Author=> Service.searchBookByAuthor(param)
       case Criteria.Publisher=> Service.searchBookByPublisher(param)
