@@ -28,66 +28,46 @@
 ```
 ### Add books
 #### Request
-```POST /books```
+```POST /books/book```
 ##### Request Body
 ```json
-[
-	{
-		"isbn":"1-453-2",
-		"title":"Functional Programming in Scala",
-		"author":"Paul Chiusano",
-		"publisher":"Manning",
-		"category":"Programming"
-	},
-	{
-		"isbn":"2-34-567",
-		"title":"Harry Potter and the Deathly Hallows",
-		"author":"JK Rowling",
-		"publisher":"Bloomsbury",
-		"category":"Fiction"
-	}
-]
+{
+    "isbn":"1-453-2",
+    "title":"Functional Programming in Scala",
+    "author":"Paul Chiusano",
+    "publisher":"Manning",
+    "category":"Programming"
+}
 ```
 #### Response
 ```json
-[
-    {
-        "isbn": "1-453-2",
-        "title": "Functional Programming in Scala",
-        "author": "Paul Chiusano",
-        "publisher": "Manning",
-        "category": "Programming",
-        "quantity": 1
-    },
-    {
-        "isbn": "2-34-567",
-        "title": "Harry Potter and the Deathly Hallows",
-        "author": "JK Rowling",
-        "publisher": "Bloomsbury",
-        "category": "Fiction",
-        "quantity": 1
-    }
-]
+{
+    "isbn": "1-453-2",
+    "title": "Functional Programming in Scala",
+    "author": "Paul Chiusano",
+    "publisher": "Manning",
+    "category": "Programming",
+    "quantity": 1
+}
 ```
-### Search by ISBN
+### Get book
 #### Request
-```GET /books/isbn/{isbn}```
+```GET /books/book/<<isbn>>```
 #### Response
 ```json
-[
-    {
-        "isbn": "1-453-2",
-        "title": "Functional Programming in Scala",
-        "author": "Paul Chiusano",
-        "publisher": "Manning",
-        "category": "Programming",
-        "quantity": 1
-    }
-]
+{
+    "isbn": "1-453-2",
+    "title": "Functional Programming in Scala",
+    "author": "Paul Chiusano",
+    "publisher": "Manning",
+    "category": "Programming",
+    "quantity": 1
+}
+
 ```
 ### Search by Title
 #### Request
-```GET /books/title/{title}```
+```GET /books?title=<<title>>```
 #### Response
 ```json
 [
@@ -103,7 +83,7 @@
 ```
 ### Search by Author
 #### Request
-```GET /books/author/{author}```
+```GET /books?author=<<author>>```
 #### Response
 ```json
 [
@@ -119,7 +99,7 @@
 ```
 ### Search by Publisher
 #### Request
-```GET /books/publisher/{publisher}```
+```GET /books?publisher=<<publisher>>```
 #### Response
 ```json
 [
@@ -135,7 +115,7 @@
 ```
 ### Search by Category
 #### Request
-```GET /books/category/{category}```
+```GET /books?category=<<category>>```
 #### Response
 ```json
 [
