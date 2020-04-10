@@ -20,6 +20,7 @@ object Utility {
       case _ => List()
     }
   }
+
   def objectToJson(obj: Any): String = {
     new Gson().toJson(obj)
   }

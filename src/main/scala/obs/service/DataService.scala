@@ -5,7 +5,7 @@ import obs.enums.Criteria
 import obs.model.Book
 import scala.collection.mutable
 
-object DataService {
+class DataService {
   def addBook(book:Book):Book= {
     val b: Option[(Int,Book)]=Data.getBookList.find(x => x._2.isbn==book.isbn)
       b match {
