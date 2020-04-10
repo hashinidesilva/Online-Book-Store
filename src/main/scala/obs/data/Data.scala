@@ -26,7 +26,6 @@ object Data {
       case Criteria.Author => bookList.values.filter(book=> book.author.toLowerCase==param)
       case Criteria.Publisher => bookList.values.filter(book=> book.publisher.toLowerCase==param)
       case Criteria.Category => bookList.values.filter(book=> book.category.toLowerCase==param)
-
     }
   }
 

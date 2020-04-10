@@ -1,48 +1,46 @@
 package obs.service
 
-import obs.data.Data
-import obs.enums.Criteria
+import obs.enums.{Criteria, Request}
 import obs.model.Book
-import scala.collection.mutable
+import obs.server.Utility
 
-object Service {
+class Service {
 
-  def addBook(book:Book):Book= {
-    val b: Option[(Int,Book)]=Data.getBookList.find(x => x._2.isbn==book.isbn)
-      b match {
-        case Some((key,_))=>
-          Data.getBookList(key).quantity+=1
-          book.quantity=Data.getBookList(key).quantity
-        case None =>
-          Data.addBook(book)
-      }
-    book
-    }
-
-  def getBook(isbn:String):Any ={
-    Data.getBook(isbn) match {
-      case Some(b) => b
-      case None => "No record found"
+  def getResponse(uriList:List[String], request:String, requestBody:String): (String,Int) ={
+    val HTTP_METHOD_NOT_ALLOWED = 405
+    val HTTP_SUCCESS = 200
+    val HTTP_CREATED = 201
+    val criteriaList=List("title","publisher","category","author")
+    (request,uriList) match {
+      case (Request.GET ,List("","") ) => (getBookList,HTTP_SUCCESS)
+      case (Request.GET ,List(book,isbn)) if(book=="book" && isbn !="") => (getBook(isbn),HTTP_SUCCESS)
+      case (Request.GET ,List(criteria,value)) if(criteriaList.contains(criteria.toLowerCase)) =>
+        (searchBook(criteria.toLowerCase,value.toLowerCase),HTTP_SUCCESS)
+      case (Request.POST ,List(book,""))  if(book =="book") => (addBook(Utility.jsonToObject(requestBody)),HTTP_CREATED)
+      case _ => ("Invalid Request",HTTP_METHOD_NOT_ALLOWED)
     }
   }
 
-  def viewBookList:mutable.HashMap[Int,Book]= {
-    Data.getBookList
+  private def getBookList:String={
+    Utility.objectListToJson(DataService.viewBookList.values)
   }
 
-  def searchBookByTitle(title:String):Iterable[Book]={
-    Data.search(Criteria.Title,title)
+  private def addBook(b:Book):String={
+    b.quantity=1
+    Utility.objectToJson(DataService.addBook(b))
   }
 
-  def searchBookByAuthor(author:String):Iterable[Book]={
-    Data.search(Criteria.Author,author)
+  private def getBook(isbn:String):String={
+    Utility.objectToJson(DataService.getBook(isbn))
   }
 
-  def searchBookByPublisher(publisher:String):Iterable[Book]={
-    Data.search(Criteria.Publisher,publisher)
-  }
-
-  def searchBookByCategory(category:String):Iterable[Book]={
-    Data.search(Criteria.Category,category)
+  private def searchBook(criteria:String,param:String):String={
+    val bookList=criteria match {
+      case Criteria.Title => DataService.searchBookByTitle(param)
+      case Criteria.Author=> DataService.searchBookByAuthor(param)
+      case Criteria.Publisher=> DataService.searchBookByPublisher(param)
+      case Criteria.Category=> DataService.searchBookByCategory(param)
+    }
+    Utility.objectListToJson(bookList)
   }
 }
