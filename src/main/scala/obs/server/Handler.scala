@@ -2,11 +2,9 @@ package obs.server
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.nio.charset.StandardCharsets
-
 import com.sun.net.httpserver.{HttpExchange, HttpHandler}
 import obs.common.Utility
 import obs.controller.Controller
-import obs.service.Service
 
 class Handler extends HttpHandler {
 

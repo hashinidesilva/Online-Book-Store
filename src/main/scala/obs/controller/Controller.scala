@@ -1,6 +1,5 @@
 package obs.controller
 
-import obs.common.Utility
 import obs.enums.Request
 import obs.service.Service
 
@@ -17,7 +16,7 @@ class Controller {
       case (Request.GET,0) => (service.getBookList,HTTP_SUCCESS)
       case (Request.GET,2) if criteriaList.contains(uriList.head.toLowerCase) =>
         (service.searchBook(uriList.head.toLowerCase,uriList(1).toLowerCase),HTTP_SUCCESS)
-      case (Request.POST,1) if uriList.head =="book" => (service.addBook(Utility.jsonToObject(requestBody)),HTTP_CREATED)
+      case (Request.POST,1) if uriList.head =="book" => (service.addBook(requestBody),HTTP_CREATED)
       case _ => ("Invalid Request",HTTP_METHOD_NOT_ALLOWED)
     }
   }

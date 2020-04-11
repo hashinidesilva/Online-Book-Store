@@ -11,7 +11,8 @@ class Service {
     Utility.objectListToJson(Data.getBookList.values)
   }
 
-  def addBook(book:Book):String={
+  def addBook(requestBody:String):String={
+    val book=Utility.jsonToObject(requestBody)
     book.quantity=1
     val b: Option[(Int,Book)]=Data.getBookList.find(x => x._2.isbn==book.isbn)
     b match {
