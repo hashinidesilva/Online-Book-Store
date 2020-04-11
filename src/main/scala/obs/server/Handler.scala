@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets
 
 import com.sun.net.httpserver.{HttpExchange, HttpHandler}
 import obs.common.Utility
+import obs.controller.Controller
 import obs.service.Service
 
 class Handler extends HttpHandler {
@@ -12,7 +13,7 @@ class Handler extends HttpHandler {
   override def handle(httpExchange: HttpExchange): Unit = {
     val request = httpExchange.getRequestMethod
     val uri = httpExchange.getRequestURI
-    val service=new Service()
+    val controller=new Controller()
 
     //RequestBody
     val isr = new InputStreamReader(httpExchange.getRequestBody, StandardCharsets.UTF_8)
@@ -22,7 +23,7 @@ class Handler extends HttpHandler {
     val requestBody=stringBuilder.toString()
 
     //Get response and status
-    val (response,status)=service.getResponse(Utility.parseUri(uri),request,requestBody)
+    val (response,status)=controller.getResponse(Utility.parseUri(uri),request,requestBody)
 
     httpExchange.getResponseHeaders.add("Content-type", " application/json; charset=utf-8")
     httpExchange.sendResponseHeaders(status, response.length)

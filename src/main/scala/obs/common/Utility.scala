@@ -1,10 +1,8 @@
 package obs.common
 
 import java.net.URI
-
 import com.google.gson.Gson
 import obs.model.Book
-
 import scala.jdk.javaapi.CollectionConverters
 
 object Utility {
