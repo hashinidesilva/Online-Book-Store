@@ -1,8 +1,8 @@
 package obs.service
 
+import obs.common.Utility
 import obs.enums.{Criteria, Request}
 import obs.model.Book
-import obs.server.Utility
 
 class Service {
 
@@ -13,12 +13,12 @@ class Service {
     val HTTP_SUCCESS = 200
     val HTTP_CREATED = 201
     val criteriaList=List("title","publisher","category","author")
-    (request,uriList) match {
-      case (Request.GET ,List("","") ) => (getBookList,HTTP_SUCCESS)
-      case (Request.GET ,List(book,isbn)) if book=="book" && isbn !="" => (getBook(isbn),HTTP_SUCCESS)
-      case (Request.GET ,List(criteria,value)) if criteriaList.contains(criteria.toLowerCase) =>
-        (searchBook(criteria.toLowerCase,value.toLowerCase),HTTP_SUCCESS)
-      case (Request.POST ,List(book,""))  if book =="book" => (addBook(Utility.jsonToObject(requestBody)),HTTP_CREATED)
+    (request,uriList.length) match {
+      case (Request.GET,2) if(uriList(0)=="book") =>  (getBook(uriList(1)),HTTP_SUCCESS)
+      case (Request.GET,0) => (getBookList,HTTP_SUCCESS)
+      case (Request.GET,2) if criteriaList.contains(uriList(0).toLowerCase) =>
+        (searchBook(uriList(0).toLowerCase,uriList(1).toLowerCase),HTTP_SUCCESS)
+      case (Request.POST,1) if uriList(0) =="book" => (addBook(Utility.jsonToObject(requestBody)),HTTP_CREATED)
       case _ => ("Invalid Request",HTTP_METHOD_NOT_ALLOWED)
     }
   }
