@@ -6,7 +6,7 @@ import obs.service.Service
 class Controller {
   val service = new Service()
 
-  def getResponse(uriList:List[String], request:String, requestBody:String): (String,Int) ={
+  def getResponse(uriList:List[String], request:String, requestBody:String): (String,Integer) ={
     val HTTP_METHOD_NOT_ALLOWED = 405
     val HTTP_SUCCESS = 200
     val HTTP_CREATED = 201
