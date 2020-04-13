@@ -31,9 +31,7 @@ object Utility {
     val regex = "^(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]" +
       "{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$"
 
-    val pattern = Pattern.compile(regex)
-    val matcher = pattern.matcher(isbn)
-    if (matcher.matches()) {
+    if (Pattern.compile(regex).matcher(isbn).matches()) {
       val id=isbn.replace("-","")
       if(id.length==10) {
         val seq: Seq[Int] = for {
