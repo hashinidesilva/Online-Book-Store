@@ -13,23 +13,28 @@ class Service {
 
   def addBook(requestBody:String):String={
     val book=Utility.jsonToObject(requestBody)
-    book.quantity=1
-    val b: Option[(Int,Book)]=Data.getBookList.find(x => x._2.isbn==book.isbn)
-    b match {
-      case Some((key,_))=>
-        Data.getBookList(key).quantity+=1
-        book.quantity=Data.getBookList(key).quantity
-      case None =>
-        Data.addBook(book)
-    }
-    Utility.objectToJson(book)
+    if(Utility.isbnChecker(book.isbn)){
+      book.quantity=1
+      val b: Option[(Int,Book)]=Data.getBookList.find(x => x._2.isbn==book.isbn)
+      b match {
+        case Some((key,_))=>
+          Data.getBookList(key).quantity+=1
+          book.quantity=Data.getBookList(key).quantity
+        case None =>
+          Data.addBook(book)
+      }
+      Utility.objectToJson(book)
+    }else "Invalid ISBN"
+
   }
 
   def getBook(isbn:String):String={
-    Data.getBook(isbn) match {
-      case Some(b) =>  Utility.objectToJson(b)
-      case None => "No record found"
-    }
+    if(Utility.isbnChecker(isbn)) {
+      Data.getBook(isbn) match {
+        case Some(b) => Utility.objectToJson(b)
+        case None => "No record found"
+      }
+    }else "Invalid ISBN"
   }
 
   def searchBook(criteria:String,param:String):String={

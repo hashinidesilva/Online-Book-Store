@@ -4,6 +4,7 @@ import java.net.URI
 import com.google.gson.Gson
 import obs.model.Book
 import scala.jdk.javaapi.CollectionConverters
+import java.util.regex.Pattern
 
 object Utility {
 
@@ -25,4 +26,28 @@ object Utility {
   def jsonToObject(response: String): Book = {
     new Gson().fromJson(response, classOf[Book])
   }
+
+  def isbnChecker(isbn:String): Boolean ={
+    val regex = "^(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]" +
+      "{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$"
+
+    val pattern = Pattern.compile(regex)
+    val matcher = pattern.matcher(isbn)
+    if (matcher.matches()) {
+      val id=isbn.replace("-","")
+      if(id.length==10) {
+        val seq: Seq[Int] = for {
+          (x, y) <- id zip (10 until 0 by -1)
+        } yield x.asDigit * y
+        if (seq.sum % 11 == 0) true else false
+      }
+      else if(id.length==13){
+        val seq: Seq[Int] = for {
+          (x, y) <- id zip LazyList.continually(Seq(1,3)).flatten
+        } yield x.asDigit * y
+        if (seq.sum % 10 == 0) true else false
+      }else false
+    }else false
+  }
+
 }
