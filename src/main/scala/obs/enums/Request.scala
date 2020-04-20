@@ -1,6 +1,6 @@
 package obs.enums
 
-object Request {
+object Request extends Enumeration {
   val GET = "GET"
   val POST = "POST"
 }
