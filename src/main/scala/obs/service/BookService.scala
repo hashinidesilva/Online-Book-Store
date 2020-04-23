@@ -5,7 +5,7 @@ import obs.data.Data
 import obs.enums.Criteria
 import obs.model.Book
 
-class Service {
+class BookService {
 
   def getBookList:String={
     Utility.objectListToJson(Data.getBookList.values)
