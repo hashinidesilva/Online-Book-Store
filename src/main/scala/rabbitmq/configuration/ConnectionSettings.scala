@@ -1,4 +1,4 @@
-package rabbitmq.settings
+package rabbitmq.configuration
 
 import com.rabbitmq.client.ConnectionFactory
 

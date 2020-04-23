@@ -3,7 +3,7 @@ package rabbitmq.subscribers
 import obs.enums.Queues
 import obs.model.Book
 import obs.model.message_model.CreateBook
-import rabbitmq.settings.ConnectionSettings
+import rabbitmq.configuration.ConnectionSettings
 
 object CreateSubscriber {
 
@@ -14,7 +14,7 @@ object CreateSubscriber {
       val settings=new ConnectionSettings()
       val factory=settings.buildConnectionFactory()
       createSubscriber = new Subscriber(Queues.CREATE_QUEUE_NAME.toString,factory)
-      val book=Book("978-981-08-4451-6","fp Programming in Scala","Paul Chiusano", "Manning","Programming")
+      val book=Book("9781617290657","fp Programming in Scala","Paul Chiusano", "Manning","Programming")
       response=createSubscriber.call(CreateBook(book))
       println(response)
     }catch {

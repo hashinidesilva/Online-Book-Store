@@ -1,15 +1,13 @@
 package rabbitmq.server
 
 import java.util.concurrent.CountDownLatch
-
 import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client._
 import obs.enums.Queues
 import obs.controller.BookMessageController
 import obs.common.Utility
 import obs.model.message_model.{CreateBook, GetBook, SearchBooks}
-import rabbitmq.settings.ConnectionSettings
-
+import rabbitmq.configuration.ConnectionSettings
 import scala.collection.mutable.ListBuffer
 
 class ServerCallback(channel: Channel, latch: CountDownLatch) extends DeliverCallback{

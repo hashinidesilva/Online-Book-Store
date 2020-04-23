@@ -2,7 +2,7 @@ package rabbitmq.subscribers
 
 import obs.enums.Queues
 import obs.model.message_model.SearchBooks
-import rabbitmq.settings.ConnectionSettings
+import rabbitmq.configuration.ConnectionSettings
 
 object SearchSubscriber{
 
