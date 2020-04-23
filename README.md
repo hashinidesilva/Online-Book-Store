@@ -129,18 +129,17 @@
     }
 ]
 ```
-
-## RabbitMQ
+##RabbitMQ
 ```directory: /src/main/scala/rabbitmq```
-### Add book
+###Add book
 ```client-CreateSubscriber```
-#### Request
+####Request
 ```CreateBook(book:Book)```
-### Get book
+###Get book
 ```client-GetSubscriber```
-#### Request
+####Request
 ```GetBook(isbn:String)```
-### Search book
+###Search book
 ```client-SearchSubscriber```
-#### Request
+####Request
 ```SearchBooks(criteria:String,value:String)```
