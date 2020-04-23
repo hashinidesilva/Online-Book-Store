@@ -9,7 +9,7 @@
 ```json
 [
     {
-        "isbn": "1-453-2",
+        "isbn": "978-1617290657",
         "title": "Functional Programming in Scala",
         "author": "Paul Chiusano",
         "publisher": "Manning",
@@ -17,7 +17,7 @@
         "quantity": 4
     },
     {
-        "isbn": "2-34-567",
+        "isbn": "9781781102695",
         "title": "Harry Potter and the Deathly Hallows",
         "author": "JK Rowling",
         "publisher": "Bloomsbury",
@@ -26,13 +26,13 @@
     }
 ]
 ```
-### Add books
+### Add book
 #### Request
 ```POST /books/book```
 ##### Request Body
 ```json
 {
-    "isbn":"1-453-2",
+    "isbn":"978-1617290657",
     "title":"Functional Programming in Scala",
     "author":"Paul Chiusano",
     "publisher":"Manning",
@@ -42,7 +42,7 @@
 #### Response
 ```json
 {
-    "isbn": "1-453-2",
+    "isbn": "978-1617290657",
     "title": "Functional Programming in Scala",
     "author": "Paul Chiusano",
     "publisher": "Manning",
@@ -56,7 +56,7 @@
 #### Response
 ```json
 {
-    "isbn": "1-453-2",
+    "isbn": "978-1617290657",
     "title": "Functional Programming in Scala",
     "author": "Paul Chiusano",
     "publisher": "Manning",
@@ -72,7 +72,7 @@
 ```json
 [
     {
-        "isbn": "2-34-567",
+        "isbn": "9781781102695",
         "title": "Harry Potter and the Deathly Hallows",
         "author": "JK Rowling",
         "publisher": "Bloomsbury",
@@ -88,7 +88,7 @@
 ```json
 [
     {
-        "isbn": "2-34-567",
+        "isbn": "9781781102695",
         "title": "Harry Potter and the Deathly Hallows",
         "author": "JK Rowling",
         "publisher": "Bloomsbury",
@@ -104,7 +104,7 @@
 ```json
 [
     {
-        "isbn": "2-34-567",
+        "isbn": "9781781102695",
         "title": "Harry Potter and the Deathly Hallows",
         "author": "JK Rowling",
         "publisher": "Bloomsbury",
@@ -120,7 +120,7 @@
 ```json
 [
     {
-        "isbn": "2-34-567",
+        "isbn": "9781781102695",
         "title": "Harry Potter and the Deathly Hallows",
         "author": "JK Rowling",
         "publisher": "Bloomsbury",
@@ -129,4 +129,17 @@
     }
 ]
 ```
-
+##RabbitMQ
+```directory: /src/main/scala/rabbitmq```
+###Add book
+```client-CreateSubscriber```
+####Request
+```CreateBook(book:Book)```
+###Get book
+```client-GetSubscriber```
+####Request
+```GetBook(isbn:String)```
+###Search book
+```client-SearchSubscriber```
+####Request
+```SearchBooks(criteria:String,value:String)```
