@@ -1,23 +1,27 @@
 package rabbitmq.subscribers
 
 import obs.enums.Queues
+import obs.model.message_model.GetBook
+import rabbitmq.settings.ConnectionSettings
 
 object GetSubscriber {
 
   def main(args: Array[String]): Unit = {
-    var getBook:Subscriber =null
+    var getSubscriber:Subscriber =null
     var response:String =null
     try{
-      getBook = new Subscriber(Queues.GET_QUEUE_NAME.toString)
+      val settings=new ConnectionSettings()
+      val factory=settings.buildConnectionFactory()
+      getSubscriber = new Subscriber(Queues.GET_QUEUE_NAME.toString,factory)
       val isbn="978-981-08-4451-6"
-      response=getBook.call(isbn)
+      response=getSubscriber.call(GetBook(isbn))
       println(response)
     }catch {
       case e:Exception => e.printStackTrace()
     }finally {
-      if(getBook!=null){
+      if(getSubscriber!=null){
         try{
-          getBook.close()
+          getSubscriber.close()
         }catch {
           case _:Exception =>
         }
