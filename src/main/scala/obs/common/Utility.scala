@@ -1,6 +1,5 @@
 package obs.common
 
-import java.io.{ByteArrayInputStream, ByteArrayOutputStream, ObjectInputStream, ObjectOutputStream}
 import java.net.URI
 import com.google.gson.Gson
 import obs.model.Book
@@ -48,19 +47,4 @@ object Utility {
       }else false
     }else false
   }
-
-  def serialize(value: Any): Array[Byte] = {
-    val stream: ByteArrayOutputStream = new ByteArrayOutputStream()
-    val oos = new ObjectOutputStream(stream)
-    oos.writeObject(value)
-    oos.close()
-    stream.toByteArray
-  }
-
-  def deserialize(value:Array[Byte]):Any={
-    val stream=new ByteArrayInputStream(value)
-    val ois = new ObjectInputStream(stream)
-    ois.readObject
-  }
-
 }

@@ -1,8 +1,8 @@
 package rabbitmq.subscribers
 
 import obs.enums.Queues
-import obs.model.message_model.SearchBooks
 import rabbitmq.configuration.ConnectionSettings
+import protobuf.subscriber.SearchBook
 
 object SearchSubscriber{
 
@@ -13,7 +13,11 @@ object SearchSubscriber{
       val settings=new ConnectionSettings()
       val factory=settings.buildConnectionFactory()
       searchSubscriber = new Subscriber(Queues.SEARCH_QUEUE_NAME.toString,factory)
-      response=searchSubscriber.call(SearchBooks("title","fp programming in scala"))
+      val book=SearchBook(
+        criteria = Some("title"),
+        value = Some("fp programming in scala")
+      )
+      response=searchSubscriber.call(book.toByteArray)
       println(response)
     }catch {
       case e:Exception => e.printStackTrace()

@@ -5,10 +5,10 @@ import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client._
 import obs.enums.Queues
 import obs.controller.BookMessageController
-import obs.common.Utility
-import obs.model.message_model.{CreateBook, GetBook, SearchBooks}
 import rabbitmq.configuration.ConnectionSettings
 import scala.collection.mutable.ListBuffer
+import protobuf.subscriber._
+import obs.model.Book
 
 class ServerCallback(channel: Channel, latch: CountDownLatch) extends DeliverCallback{
   override def handle(consumerTag:String,delivery:Delivery): Unit ={
@@ -16,25 +16,24 @@ class ServerCallback(channel: Channel, latch: CountDownLatch) extends DeliverCal
     val replyProps = new BasicProperties.Builder()
       .correlationId(delivery.getProperties.getCorrelationId)
       .build()
-    val message=Utility.deserialize(delivery.getBody)
-    response=getResponse(channel,message)
+    response=getResponse(channel,delivery.getBody)
     channel.basicPublish("",delivery.getProperties.getReplyTo,replyProps,response.getBytes("UTF-8"))
     channel.basicAck(delivery.getEnvelope.getDeliveryTag,false)
     latch.countDown()
   }
 
-  def getResponse(channel:Channel,message:Any):String ={
+  def getResponse(channel:Channel,message:Array[Byte]):String ={
     val controller =new BookMessageController
     channel.getChannelNumber match {
       case 1 =>
-        val get=message.asInstanceOf[GetBook]
-        controller.getBook(get.isbn)
+        val book=GetBook.parseFrom(message)
+        controller.getBook(book.getIsbn)
       case 2 =>
-        val create=message.asInstanceOf[CreateBook]
-        controller.createBook(create.book)
+        val book=CreateBook.parseFrom(message)
+        controller.createBook(Book(book.getIsbn,book.getTitle,book.getAuthor,book.getPublisher,book.getCategory))
       case 3 =>
-        val search=message.asInstanceOf[SearchBooks]
-        controller.searchBook(search.criteria,search.value)
+        val book=SearchBook.parseFrom(message)
+        controller.searchBook(book.getCriteria,book.getValue)
       case _ => "Channel not found"
     }
   }

@@ -1,8 +1,8 @@
 package rabbitmq.subscribers
 
 import obs.enums.Queues
-import obs.model.message_model.GetBook
 import rabbitmq.configuration.ConnectionSettings
+import protobuf.subscriber.GetBook
 
 object GetSubscriber {
 
@@ -13,8 +13,10 @@ object GetSubscriber {
       val settings=new ConnectionSettings()
       val factory=settings.buildConnectionFactory()
       getSubscriber = new Subscriber(Queues.GET_QUEUE_NAME.toString,factory)
-      val isbn="978-981-08-4451-6"
-      response=getSubscriber.call(GetBook(isbn))
+      val isbn=GetBook(
+        isbn=Some("9781617290657")
+      )
+      response=getSubscriber.call(isbn.toByteArray)
       println(response)
     }catch {
       case e:Exception => e.printStackTrace()
