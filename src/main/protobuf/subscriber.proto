@@ -1,0 +1,18 @@
+package protobuf;
+
+message CreateBook{
+    optional string isbn=1;
+    optional string title=2;
+    optional string author=3;
+    optional string publisher=4;
+    optional string category=5;
+}
+
+message GetBook{
+    optional string isbn=1;
+}
+
+message SearchBook{
+    optional string criteria=1;
+    optional string value=2;
+}
